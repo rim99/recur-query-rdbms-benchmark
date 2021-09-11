@@ -95,7 +95,7 @@ class Worker(threading.Thread):
         my_cursor = self.mysql_cnx.cursor()
         pg_cursor = self.pg_cnx.cursor()
         try:
-            self.insert_record(my_cursor, pg_cursor, self.operator)
+            self.insert_record(my_cursor, pg_cursor, self.operator, random.randrange(300, 600))
         finally:
             self.mysql_cnx.commit()
             my_cursor.close() 
@@ -103,8 +103,7 @@ class Worker(threading.Thread):
             pg_cursor.close()
 
 
-    def insert_record(self, mysql_cursor, pg_cursor, operator):
-        # print("Generating for: " + operator + " " + str(id+1) + "/" + str(len(operators)) + " " + str(datetime.now()))
+    def insert_record(self, mysql_cursor, pg_cursor, operator, step):
         import tag_gen
         tags = tag_gen.TagGen.gen()
         tag_l = len(tags)
@@ -140,8 +139,12 @@ class Worker(threading.Thread):
         }
         po = product_offer_gen.ProductOfferGen.gen(ps, product_offer_number_estimated)
 
+        counter = 0
         for psr_models in (infra_res_set,resource_set, cfss_set, po_spec, po_spec2, po):
             for entity in psr_models:
+                counter += 1
+                if counter % step == 0:
+                    print("inserting")
                 start_time, end_time = random_time()
                 tag_ref = random_tag_ref()
                 m_rec = entity.to_mysql_record(operator, start_time, end_time)
