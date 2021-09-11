@@ -12,6 +12,14 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 4096M
+        reservations:
+          cpus: '0.25'
+          memory: 128M  
 
   mysql:
     image: mysql:8.0.26
@@ -25,6 +33,14 @@ services:
       - MYSQL_DATABASE=psr
       - MYSQL_USER=someone
       - MYSQL_PASSWORD=passme
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 4096M
+        reservations:
+          cpus: '0.25'
+          memory: 128M  
     
   generator:
     build: 
@@ -35,5 +51,21 @@ services:
     depends_on:
       - postgres
       - mysql
+
+  consumer:
+    environment:
+      - CONCURRENCY=8
+      - HITS_PER_WORKER=1000
+      - TEST_BEHAVIOUR=search # can be search or query
+      - TEST_DB=mysql # can be mysql or postgres
+      # const env
+      - PG_HOST=postgres
+      - PG_DB=postgres
+      - PG_USER=postgres
+      - PG_PASSWORD=postgres
+      - MYSQL_HOST=mysql
+      - MYSQL_DB=psr
+      - MYSQL_USER=someone
+      - MYSQL_PASSWORD=passme
 
 
