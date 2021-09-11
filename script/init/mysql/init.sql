@@ -23,8 +23,18 @@ CREATE TABLE spec_tag (
     entity_id       binary(16) not null,
     revision_id     binary(16) not null,
     tag_id          binary(16) not null,
-    PRIMARY KEY(operator_name, entity_id, revision_id)
+    PRIMARY KEY(operator_name, entity_id, revision_id, tag_id)
 ) PARTITION BY KEY (operator_name);
 
 CREATE INDEX spec_tag_s using BTREE ON spec_tag (operator_name, entity_id, revision_id);
 CREATE INDEX spec_tag_t using BTREE ON spec_tag (operator_name, tag_id);
+
+CREATE TABLE spec_relationship (
+    operator_name    varchar(64) not null,
+    parent_entity_id binary(16) not null,
+    child_entity_id  binary(16) not null,
+    PRIMARY KEY(operator_name, parent_entity_id, child_entity_id)
+) PARTITION BY KEY (operator_name);
+
+CREATE INDEX spec_relationship_p using BTREE ON spec_relationship (operator_name, parent_entity_id);
+CREATE INDEX spec_relationship_c using BTREE ON spec_relationship (operator_name, child_entity_id);

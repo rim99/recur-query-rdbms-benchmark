@@ -81,6 +81,8 @@ class ResourceSpec:
             })            
         }
         return rec    
+    def get_ref_list(self):
+        return []     
 
 class ResousceSpecGen:
     @staticmethod

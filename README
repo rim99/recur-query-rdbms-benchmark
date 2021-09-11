@@ -1,0 +1,17 @@
+
+
+
+## login in console
+
+### MySQL
+
+```
+mysql psr -u someone -p
+```
+password: `passme`
+
+### PostgreSQL
+
+```
+psql postgres postgres
+```

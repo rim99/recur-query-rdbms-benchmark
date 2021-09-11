@@ -60,6 +60,8 @@ class Cfss:
             })
         }
         return rec      
+    def get_ref_list(self):
+        return [self.reference_id]    
 
 class CfssGen:
     @staticmethod

@@ -39,6 +39,11 @@ class ProductOffer:
             "properties": "{}"            
         }
         return rec    
+    def get_ref_list(self):
+        res = set()
+        for i in self.product_spec_ids:
+            res.add(i)
+        return res
 
 def random_ps(pl_tuple, minN = 5, maxN = 50):
     pl_l = len(pl_tuple)

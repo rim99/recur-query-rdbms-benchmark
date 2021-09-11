@@ -26,10 +26,10 @@ services:
       - MYSQL_USER=someone
       - MYSQL_PASSWORD=passme
     
-  generater:
+  generator:
     build: 
       context: ./py
-      dockerfile: generater.dockerfile
+      dockerfile: generator.dockerfile
     volumes:
       - ./py:/usr/src/app
     depends_on:

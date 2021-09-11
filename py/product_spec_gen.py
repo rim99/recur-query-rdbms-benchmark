@@ -170,6 +170,11 @@ class ProductSpec:
             })            
         }
         return rec         
+    def get_ref_list(self):
+        res = set()
+        for i in self.child_id_tuple:
+            res.add(i)
+        return res
 
 def random_supported_countries():
     ac_indices = set()
@@ -200,7 +205,7 @@ class ProductSpecGen:
         result = set()
         for r in resource_set:
             ac = random_supported_countries()
-            result.add(ProductSpec((r.id), ac))
+            result.add(ProductSpec(tuple([r.id]), ac))
         return tuple(result)    
 
 

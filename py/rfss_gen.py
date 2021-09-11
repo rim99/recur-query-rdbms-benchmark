@@ -49,6 +49,11 @@ class Rfss:
             })            
         }
         return rec      
+    def get_ref_list(self):
+        res = set()
+        for i in self.reference:
+            res.add(i)
+        return res
 
 class RfssGen:
     @staticmethod
