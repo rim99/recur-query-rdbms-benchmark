@@ -1,5 +1,6 @@
 import random
 import id_gen
+import json
 
 
 avaliable_countries = [
@@ -139,22 +140,36 @@ class ProductSpec:
         return (self.child_id_tuple, self.supported_countries)== (other.child_id_tuple, other.supported_countries)
     def __hash__(self):
         return hash(("ProductSpec", self.child_id_tuple, self.supported_countries))     
-    def to_record(self, operator, tags, start_time, end_time):
+    def to_mysql_record(self, operator, start_time, end_time):
         rec = {
             "start_time": start_time,
             "end_time": end_time,
-            "entity_id": self.id,
+            "entity_id": self.id.bytes,
             "operator_name": operator,
             "psr_type": 3,
-            "revision_id": self.rev_id,
+            "revision_id": self.rev_id.bytes,
             "name": "product_spec",
             "description": str(self.supported_countries),
-            "properties": {
+            "properties": json.dumps({
                 "supported_countries": self.supported_countries
-            },            
-            "tags": tags
+            })            
         }
         return rec     
+    def to_pg_record(self, operator, start_time, end_time):
+        rec = {
+            "start_time": start_time,
+            "end_time": end_time,
+            "entity_id": str(self.id),
+            "operator_name": operator,
+            "psr_type": 3,
+            "revision_id": str(self.rev_id),
+            "name": "product_spec",
+            "description": str(self.supported_countries),
+            "properties": json.dumps({
+                "supported_countries": self.supported_countries
+            })            
+        }
+        return rec         
 
 def random_supported_countries():
     ac_indices = set()

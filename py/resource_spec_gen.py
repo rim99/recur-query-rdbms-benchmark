@@ -1,5 +1,6 @@
 import random
 import id_gen
+import json
 
 companies = {
     "infra": [
@@ -46,27 +47,40 @@ class ResourceSpec:
         return self.__dict__ == other.__dict__   
     def __hash__(self):
         return hash(("ResourceSpec", self.type, self.company, self.subtype, self.choice))     
-    def to_record(self, operator, tags, start_time, end_time):
+    def to_mysql_record(self, operator, start_time, end_time):
         rec = {
             "start_time": start_time,
             "end_time": end_time,
-            "entity_id": self.id,
+            "entity_id": self.id.bytes,
             "operator_name": operator,
             "psr_type": 0,
-            "revision_id": self.rev_id,
+            "revision_id": self.rev_id.bytes,
             "name": self.subtype,
             "description": self.choice,
-            "properties": {
+            "properties": json.dumps({
                 "company": self.company,
                 "service": self.subtype,
                 "tech_solution": self.choice
-            },            
-            "tags": tags
+            })            
         }
         return rec
-
-
-
+    def to_pg_record(self, operator, start_time, end_time):
+        rec = {
+            "start_time": start_time,
+            "end_time": end_time,
+            "entity_id": str(self.id),
+            "operator_name": operator,
+            "psr_type": 0,
+            "revision_id": str(self.rev_id),
+            "name": self.subtype,
+            "description": self.choice,
+            "properties": json.dumps({
+                "company": self.company,
+                "service": self.subtype,
+                "tech_solution": self.choice
+            })            
+        }
+        return rec    
 
 class ResousceSpecGen:
     @staticmethod
@@ -80,7 +94,7 @@ class ResousceSpecGen:
                     result.add(ResourceSpec(type, company, subtype, choice))
         else:
             for i in range(random.randrange(3, 4)):
-                result.add(ResourceSpec(type, company))
+                result.add(ResourceSpec(type, company, "app", "online service"))
         return result
 
 

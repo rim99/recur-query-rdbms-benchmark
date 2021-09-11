@@ -57,13 +57,20 @@ class Tag:
     def __init__(self, name):
         self.id = id_gen.UUID1.get()
         self.name = name
-    def to_record(operator):
+    def to_mysql_record(self, operator):
         rec = {
-            "tag_id": self.id,
+            "tag_id": self.id.bytes,
             "name": self.name,
             "operator_name": operator
         }
         return rec
+    def to_pg_record(self, operator):
+        rec = {
+            "tag_id": str(self.id),
+            "name": self.name,
+            "operator_name": operator
+        }
+        return rec    
 
 class TagGen:
     @staticmethod

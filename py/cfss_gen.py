@@ -1,5 +1,6 @@
 import random
 import id_gen
+import json
 
 limit_enums = {
     "data": [
@@ -29,22 +30,36 @@ class Cfss:
         return str(self.__dict__)
     def __hash__(self):
         return hash(("Cfss", self.limit, self.reference_id)) 
-    def to_record(self, operator, tags, start_time, end_time):
+    def to_mysql_record(self, operator, start_time, end_time):
         rec = {
             "start_time": start_time,
             "end_time": end_time,
-            "entity_id": self.id,
+            "entity_id": self.id.bytes,
             "operator_name": operator,
             "psr_type": 2,
-            "revision_id": self.rev_id,
+            "revision_id": self.rev_id.bytes,
             "name": "cfss",
             "description": self.limit,
-            "properties": {
+            "properties": json.dumps({
                 "limit": self.limit
-            },            
-            "tags": tags
+            })
         }
         return rec     
+    def to_pg_record(self, operator, start_time, end_time):
+        rec = {
+            "start_time": start_time,
+            "end_time": end_time,
+            "entity_id": str(self.id),
+            "operator_name": operator,
+            "psr_type": 2,
+            "revision_id": str(self.rev_id),
+            "name": "cfss",
+            "description": self.limit,
+            "properties": json.dumps({
+                "limit": self.limit
+            })
+        }
+        return rec      
 
 class CfssGen:
     @staticmethod

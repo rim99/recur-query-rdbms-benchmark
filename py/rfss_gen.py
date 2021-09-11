@@ -1,5 +1,6 @@
 import random
 import id_gen
+import json
 
 
 
@@ -16,23 +17,38 @@ class Rfss:
         return (self.type, self.choice, tuple(self.reference)) == (other.type, other.choice, tuple(other.reference))
     def __hash__(self):
         return hash(("Rfss", self.type, self.choice, tuple(self.reference)))     
-    def to_record(self, operator, tags, start_time, end_time):
+    def to_mysql_record(self, operator, start_time, end_time):
         rec = {
             "start_time": start_time,
             "end_time": end_time,
-            "entity_id": self.id,
+            "entity_id": self.id.bytes,
             "operator_name": operator,
             "psr_type": 1,
-            "revision_id": self.rev_id,
+            "revision_id": self.rev_id.bytes,
             "name": self.type,
             "description": self.choice,
-            "properties": {
+            "properties": json.dumps({
                 "service": self.type,
                 "tech_solution": self.choice
-            },            
-            "tags": tags
+            })            
         }
         return rec    
+    def to_pg_record(self, operator, start_time, end_time):
+        rec = {
+            "start_time": start_time,
+            "end_time": end_time,
+            "entity_id": str(self.id),
+            "operator_name": operator,
+            "psr_type": 1,
+            "revision_id": str(self.rev_id),
+            "name": self.type,
+            "description": self.choice,
+            "properties": json.dumps({
+                "service": self.type,
+                "tech_solution": self.choice
+            })            
+        }
+        return rec      
 
 class RfssGen:
     @staticmethod

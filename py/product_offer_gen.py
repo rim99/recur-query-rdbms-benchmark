@@ -13,20 +13,32 @@ class ProductOffer:
         return self.product_spec_ids == other.product_spec_ids
     def __hash__(self):
         return hash(("ProductOffer", self.product_spec_ids))     
-    def to_record(self, operator, tags, start_time, end_time):
+    def to_mysql_record(self, operator, start_time, end_time):
         rec = {
             "start_time": start_time,
             "end_time": end_time,
-            "entity_id": self.id,
+            "entity_id": self.id.bytes,
             "operator_name": operator,
             "psr_type": 4,
-            "revision_id": self.rev_id,
+            "revision_id": self.rev_id.bytes,
             "name": "product_offering",
             "description": "for test",
-            "properties": {},            
-            "tags": tags
+            "properties": "{}"            
         }
         return rec         
+    def to_pg_record(self, operator, start_time, end_time):
+        rec = {
+            "start_time": start_time,
+            "end_time": end_time,
+            "entity_id": str(self.id),
+            "operator_name": operator,
+            "psr_type": 4,
+            "revision_id": str(self.rev_id),
+            "name": "product_offering",
+            "description": "for test",
+            "properties": "{}"            
+        }
+        return rec    
 
 def random_ps(pl_tuple, minN = 5, maxN = 50):
     pl_l = len(pl_tuple)
