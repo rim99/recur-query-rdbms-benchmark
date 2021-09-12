@@ -2,16 +2,25 @@ package com.lf.catalog.test
 
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
+import akka.event.slf4j.Logger
 
 object Tester {
-  def apply(): Behavior[Config] =
-    Behaviors.receive { (context, message) =>
+  private val log = Logger("Tester")
 
-      /* spawn Workers and a Collector */
-
-
-      /* trigger worker */
-
+  def apply(operatorFactory: OperatorFactory): Behavior[Config] =
+    Behaviors.receive { (ctx, msg) =>
+      log.info("Started")
+      val resultPrinter = ctx.spawn(ResultPrinter(), "result-printer")
+      val collector = ctx.spawn(new Collector(msg.concurrency, resultPrinter).start(), "collector")
+      val start = WorkerStart(
+        totalHit = msg.hitsPerWorker,
+        collector = collector
+      )
+      val operation = operatorFactory.create()
+      for (id <- Range(0, msg.concurrency)) {
+        val worker = ctx.spawn(operation.go(), s"worker-${id}")
+        worker ! start
+      }
       Behaviors.stopped
     }
 }

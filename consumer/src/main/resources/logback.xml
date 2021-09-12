@@ -1,7 +1,17 @@
 <configuration>
     <!-- This is a development logging configuration that logs to standard out, for an example of a production
         logging config, see the Akka docs: https://doc.akka.io/docs/akka/2.6/typed/logging.html#logback -->
-    <appender name="STDOUT" target="System.out" class="ch.qos.logback.core.ConsoleAppender">
+    <property name="LOG_DIR" value="./logs" />
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <encoder>
+            <pattern>[%date{ISO8601}] [%level] [%logger] [%thread] [%X{akkaSource}] - %msg%n</pattern>
+        </encoder>
+        <file>${LOG_DIR}/testing.log</file>
+        <append>true</append>
+        <immediateFlush>true</immediateFlush>
+    </appender>
+
+    <appender name="STDOUT" target="SYSTEM_OUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>[%date{ISO8601}] [%level] [%logger] [%thread] [%X{akkaSource}] - %msg%n</pattern>
         </encoder>
@@ -11,9 +21,10 @@
         <queueSize>1024</queueSize>
         <neverBlock>true</neverBlock>
         <appender-ref ref="STDOUT" />
+<!--        <appender-ref ref="FILE" />-->
     </appender>
 
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="ASYNC"/>
     </root>
 

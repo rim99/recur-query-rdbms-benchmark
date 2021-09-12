@@ -1,5 +1,8 @@
 _data
 __pycache__
 .vscode
+.metals
+logs
 
 core
+

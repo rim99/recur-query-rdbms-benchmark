@@ -1,0 +1,5 @@
+
+FROM openjdk:11.0.12-jre-bullseye
+
+WORKDIR /app 
+CMD ["java", "-jar", "testing.jar"]

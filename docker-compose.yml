@@ -53,9 +53,12 @@ services:
       - mysql
 
   consumer:
+    build: 
+      context: ./consumer
+      dockerfile: dockerfile
     environment:
       - CONCURRENCY=8
-      - HITS_PER_WORKER=1000
+      - HITS_PER_WORKER=10
       - TEST_BEHAVIOUR=search # can be search or query
       - TEST_DB=mysql # can be mysql or postgres
       # const env
@@ -67,5 +70,10 @@ services:
       - MYSQL_DB=psr
       - MYSQL_USER=someone
       - MYSQL_PASSWORD=passme
+    volumes:
+      - ./consumer/target/scala-2.13/:/app  
+    depends_on:
+      - postgres
+      - mysql  
 
 
