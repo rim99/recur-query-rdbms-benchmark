@@ -66,7 +66,7 @@ object Metrics {
      *
      *    Since we only care about the maximum of throughput, so we actively move the Period forward using the Pe only.
      */
-    val avgThroughPut = startL.length / ((endL.last - startL.head) / 1_000_000_000.0d)
+    val avgThroughPut = startL.length / math.max(1, ((endL.last - startL.head) / 1_000_000_000.0d))
 
     @tailrec
     def walkThroughTimeline(startL: Array[Long], psPosition: Int,

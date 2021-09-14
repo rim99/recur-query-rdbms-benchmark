@@ -34,6 +34,6 @@ object ResultPrinter {
 
   def apply(): Behavior[Result] = Behaviors.receive { (ctx, msg) =>
     log.info(msg.toString)
-    Behaviors.stopped
+    Behaviors.same
   }
 }

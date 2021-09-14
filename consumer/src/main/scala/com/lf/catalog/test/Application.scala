@@ -9,6 +9,8 @@ import scala.annotation.tailrec
 object Application extends App {
   val log = Logger("App")
   val testConfig = Config.collect()
+  val testing: ActorSystem[Config] = ActorSystem(Tester(User), "tester")
+
   val sc = new Scanner(System.in)
   val guide = "Please hit enter to trigger test. Type in `exit` to close application"
   log.info(guide)
@@ -21,7 +23,6 @@ object Application extends App {
       System.exit(0)
     } else {
       log.info("Testing, please don't touch keyboard")
-      val testing: ActorSystem[Config] = ActorSystem(Tester(User), "tester")
       testing ! testConfig
     }
     run()
