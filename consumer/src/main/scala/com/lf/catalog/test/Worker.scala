@@ -13,7 +13,7 @@ case class WorkerStart(totalHit: Int,
 trait Operation {
   private val log = Logger("Operation")
   // sequentially execute query and send latency metrics result to collector
-  def go(): Behavior[WorkerStart] = Behaviors.receiveMessage { cfg =>
+  final def go(): Behavior[WorkerStart] = Behaviors.receiveMessage { cfg =>
     val metrics = execute(0, cfg.totalHit, List.empty)
     log.debug("sending metric")
     cfg.collector ! WorkerShutdown(metrics)
@@ -23,7 +23,7 @@ trait Operation {
   @tailrec
   private def execute(hit: Int, limit: Int, metrics: List[Metric]): List[Metric] = {
     val start = System.nanoTime()
-    val _ = operate()
+    operate()
     val end = System.nanoTime()
     val metric = Metric(start, end)
 
