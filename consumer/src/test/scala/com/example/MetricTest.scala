@@ -1,6 +1,6 @@
 package com.example
 
-import com.lf.catalog.test.{Metric, Metrics}
+import io.psr.test.{Metric, Metrics}
 import org.scalatest.funspec.AnyFunSpec
 
 class MetricTest extends AnyFunSpec {

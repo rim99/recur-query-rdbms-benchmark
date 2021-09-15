@@ -1,4 +1,4 @@
-package com.lf.catalog.test
+package io.psr.test
 
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
@@ -13,19 +13,22 @@ object Tester {
 
       Behaviors.receiveMessage { msg =>
         log.info("Started")
-        val collector = ctx.spawn(new Collector(msg.concurrency, resultPrinter).start(), "collector")
-        val start = WorkerStart(
+        val collector = ctx.spawn(new Collector(msg.concurrency, resultPrinter).start(), s"collector-${randomString}")
+        val start = Start(
           totalHit = msg.hitsPerWorker,
           collector = collector
         )
-        val operation = operatorFactory.create()
         for (id <- Range(0, msg.concurrency)) {
-          val worker = ctx.spawn(operation.go(), s"worker-${id}")
+          val worker = ctx.spawn(operatorFactory.create(id.toString).go(), s"worker-${id}")
           worker ! start
         }
         Behaviors.same
       }
     }
+  }
+
+  private def randomString = {
+    System.currentTimeMillis().toHexString.reverse.substring(0, 4)
   }
 }
 

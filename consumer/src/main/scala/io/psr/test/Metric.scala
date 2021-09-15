@@ -1,4 +1,4 @@
-package com.lf.catalog.test
+package io.psr.test
 
 import akka.event.slf4j.Logger
 

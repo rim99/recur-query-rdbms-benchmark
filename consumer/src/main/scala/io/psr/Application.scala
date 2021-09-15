@@ -1,7 +1,9 @@
-package com.lf.catalog.test
+package io.psr
 
 import akka.actor.typed.ActorSystem
 import akka.event.slf4j.Logger
+import io.psr.test.{Config, Tester}
+import io.psr.user.JobFactory
 
 import java.util.Scanner
 import scala.annotation.tailrec
@@ -9,7 +11,7 @@ import scala.annotation.tailrec
 object Application extends App {
   val log = Logger("App")
   val testConfig = Config.collect()
-  val testing: ActorSystem[Config] = ActorSystem(Tester(User), "tester")
+  val testing: ActorSystem[Config] = ActorSystem(Tester(JobFactory.create()), "tester")
 
   val sc = new Scanner(System.in)
   val guide = "Please hit enter to trigger test. Type in `exit` to close application"
@@ -31,12 +33,4 @@ object Application extends App {
   run()
 }
 
-object User extends OperatorFactory {
-  private val log = Logger("User")
 
-  override def create(): Operation = new Operation {
-    override protected def operate(): Unit = {
-      log.debug("============= testing ============")
-    }
-  }
-}

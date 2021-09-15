@@ -1,4 +1,4 @@
-package com.lf.catalog.test
+package io.psr.test
 
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
@@ -21,7 +21,7 @@ case class Result(p50LatencyInMs: Double,
       |     - p999:    ${p999LatencyInMs}
       |     - max:     ${maxLatencyInMs}
       |  * ThroughPut(op/s):
-      |     - average: ${avgThroughPutInSec}
+      |     - avg:     ${avgThroughPutInSec}
       |     - max:     ${maxThroughPutInSec}
       |
       |
