@@ -1,22 +1,13 @@
 package io.psr.user
 
-import akka.event.slf4j.Logger
-import io.psr.test.{Operation, OperatorFactory}
-
-import java.sql.Connection
-import org.apache.tomcat.jdbc.pool.{DataSource => ApacheDataSource}
+import io.psr.test.OperatorFactory
+import org.apache.tomcat.jdbc.pool.{PoolProperties, DataSource => ApacheDataSource}
 
 import javax.sql.DataSource
-import org.apache.tomcat.jdbc.pool.PoolProperties
 
 object JobFactory {
-  private def pooledConnection(): DataSource = {
-    val testBehaviour = System.getenv("TEST_BEHAVIOUR") match {
-      case Search.name => Search
-      case Query.name => Query
-      case other => throw new IllegalArgumentException(s"Do not support test behaviour: ${other}")
-    }
-    val (driverClassName, jdbcUrl) = System.getenv("TEST_DB") match {
+  private def pooledConnection(): (Database, DataSource) = {
+    val (dbVendor, driverClassName, jdbcUrl) = System.getenv("TEST_DB") match {
       case Postgres.name =>
         val driverClassName = "org.postgresql.Driver"
         val host = System.getenv("PG_HOST")
@@ -24,7 +15,7 @@ object JobFactory {
         val username = System.getenv("PG_USER")
         val password = System.getenv("PG_PASSWORD")
         val jdbcUrl = s"jdbc:postgresql://${host}/${dbName}?user=${username}&password=${password}"
-        (driverClassName, jdbcUrl)
+        (Postgres, driverClassName, jdbcUrl)
       case Mysql.name =>
         val driverClassName = "com.mysql.cj.jdbc.Driver"
         val host = System.getenv("MYSQL_HOST")
@@ -32,12 +23,21 @@ object JobFactory {
         val username = System.getenv("MYSQL_USER")
         val password = System.getenv("MYSQL_PASSWORD")
         val jdbcUrl = s"jdbc:mysql://${host}/${dbName}?user=${username}&password=${password}"
-        (driverClassName, jdbcUrl)
+        (Mysql, driverClassName, jdbcUrl)
+      case Mariadb.name =>
+        val driverClassName = "org.mariadb.jdbc.Driver"
+        val host = System.getenv("MARIADB_HOST")
+        val port = System.getenv("MARIADB_PORT")
+        val dbName = System.getenv("MARIADB_DATABASE")
+        val username = System.getenv("MARIADB_USER")
+        val password = System.getenv("MARIADB_PASSWORD")
+        val jdbcUrl = s"jdbc:mariadb://${host}:${port}/${dbName}?user=${username}&password=${password}"
+        (Mariadb, driverClassName, jdbcUrl)
       case other => throw new IllegalArgumentException(s"Do not support db type: ${other}")
     }
     val concurrency = System.getenv("CONCURRENCY").toInt
 
-    createDataSource(driverClassName, jdbcUrl, concurrency)
+    (dbVendor, createDataSource(driverClassName, jdbcUrl, concurrency))
   }
 
   private def createDataSource(dataSourceClassName: String,
@@ -61,59 +61,14 @@ object JobFactory {
     ds
   }
 
-  def create(): OperatorFactory = new Job(pooledConnection())
-}
-
-class Job(val datasource: DataSource) extends OperatorFactory {
-  private val log = Logger("Job")
-  override def create(id: String): Operation = {
-    val conn = datasource.getConnection()
-    new BasicSqlOperation(id, conn)
-  }
-}
-
-class BasicSqlOperation(val id: String, val con: Connection) extends Operation {
-  val log = Logger(s"BasicSqlOperation-${id}")
-  override protected def operate(cycle: Int): Unit = {
-    log.trace("execute {}", cycle)
-    val st = con.createStatement
-    val rs = st.executeQuery("select 1")
-    if (rs.getFetchSize > 1) {
-      log.trace("fetched sth")
-    } else {
-      log.trace("fetched nothing")
+  def create(): OperatorFactory = {
+    val testBehaviour = System.getenv("TEST_BEHAVIOUR") match {
+      case Search.name => Search
+      case Query.name => Query
+      case Test.name => Test
+      case other => throw new IllegalArgumentException(s"Do not support test behaviour: ${other}")
     }
-    rs.close()
-    st.close()
+    val (database, connection) = pooledConnection()
+    new JobBuilder(database, connection, testBehaviour)
   }
-
-  override protected def onClose(): Unit = {
-    if (!con.isClosed) con.close()
-  }
-}
-
-sealed trait Database {
-  val name: String
-}
-
-object Postgres extends Database {
-  override val name: String = "postgres"
-}
-
-object Mysql extends Database {
-  override val name: String = "mysql"
-}
-
-sealed trait TestBehaviour {
-  val name: String
-}
-
-object Search extends TestBehaviour {
-  /* for searching preferred product offering */
-  override val name: String = "search"
-}
-
-object Query extends TestBehaviour {
-  /* for query PSR model tree for specific product offering */
-  override val name: String = "query"
 }

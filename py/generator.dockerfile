@@ -7,5 +7,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/re
     apk upgrade && \
     apk add postgresql-dev gcc musl-dev
 RUN pip install mysql-connector-python psycopg2-binary
+RUN apk add mariadb-dev
+RUN pip install mariadb
 
 CMD [ "python", "app.py" ]

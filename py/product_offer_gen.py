@@ -45,7 +45,7 @@ class ProductOffer:
             res.add(i)
         return res
 
-def random_ps(pl_tuple, minN = 5, maxN = 50):
+def random_ps(pl_tuple, minN = 2, maxN = 10):
     pl_l = len(pl_tuple)
     indices = set()
     for i in range(minN, maxN):

@@ -10,7 +10,9 @@ case class Result(p50LatencyInMs: Double,
                   p999LatencyInMs: Double,
                   maxLatencyInMs: Double,
                   avgThroughPutInSec: Double,
-                  maxThroughPutInSec: Double) {
+                  maxThroughPutInSec: Double,
+                  totalOp: Int,
+                  totalTimeInSec: Double) {
   override def toString: String =
     s"""
       | Test Result:
@@ -23,6 +25,9 @@ case class Result(p50LatencyInMs: Double,
       |  * ThroughPut(op/s):
       |     - avg:     ${avgThroughPutInSec}
       |     - max:     ${maxThroughPutInSec}
+      |  * Total:
+      |     - op: ${totalOp}
+      |     - time(s): ${totalTimeInSec}
       |
       |
       |Please hit enter to trigger test. Type in `exit` to close application

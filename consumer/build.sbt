@@ -1,4 +1,4 @@
-name := "lf-psr-rdbms-test"
+name := "psr-rdbms-test"
 
 version := "1.0"
 
@@ -17,6 +17,7 @@ libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-classic" % "1.2.5",
   "org.apache.tomcat" % "tomcat-jdbc" % "10.0.11",
   "mysql" % "mysql-connector-java" % "8.0.26",
+  "org.mariadb.jdbc" % "mariadb-java-client" % "2.7.4",
   "org.postgresql" % "postgresql" % "42.2.23",
 
   "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % Test,

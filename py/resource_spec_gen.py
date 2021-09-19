@@ -12,7 +12,7 @@ companies = {
 }
 
 infra_type = [
-   "data", "wifi", "sms", "voice" 
+   "data", "wifi", "voice" 
 ]
 
 choices = {
@@ -21,9 +21,6 @@ choices = {
     ],
     "wifi": [
         "150Mbps", "300Mbps", "450Mbps", "800Mbps"
-    ],
-    "sms": [
-        "5G", "4G"
     ],
     "voice": [
         "volte", "nr", "csfb"

@@ -3,27 +3,27 @@ This script is to generate PSR data for 15 operators. Usually, it takes around 1
 ## How to generate
 
 ```
-docker-compose start postgres mysql 
+docker-compose up postgres mysql -d
 ```
 
 then run
 
 ```
-docker-compose run generator 
+docker-compose up generator 
 ```
 
 
-## login in console
+## login DB in console
 
 ### MySQL
 
 ```
-mysql psr -u someone -p
+docker exec -it psr_data_benchmark_mysql_1  /bin/bash -c "mysql psr -u someone -p"
 ```
 password: `passme`
 
 ### PostgreSQL
 
 ```
-psql postgres postgres
+docker exec -it psr_data_benchmark_postgres_1 /bin/bash -c "psql postgres postgres"
 ```

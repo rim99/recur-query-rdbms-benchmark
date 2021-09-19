@@ -25,6 +25,7 @@ CREATE TABLE specification (
     psr_type        smallint not null,
     name            text not null,
     description     text not null,
+    -- spec_searchable_index_col tsvector GENERATED ALWAYS AS (to_tsvector('english', name || ' ' || description)) STORED,
     properties      jsonb not null,
     PRIMARY KEY(operator_name, entity_id, revision_id)
 ) PARTITION BY HASH (operator_name);
@@ -38,6 +39,7 @@ CREATE TABLE specification_par_5 PARTITION OF specification FOR VALUES WITH (MOD
 CREATE TABLE specification_par_6 PARTITION OF specification FOR VALUES WITH (MODULUS 8, REMAINDER 6);
 CREATE TABLE specification_par_7 PARTITION OF specification FOR VALUES WITH (MODULUS 8, REMAINDER 7);
 
+-- CREATE INDEX spec_search_idx ON specification USING GIN (spec_searchable_index_col);
 
 
 CREATE TABLE spec_tag (
@@ -45,19 +47,19 @@ CREATE TABLE spec_tag (
     entity_id       uuid not null,
     revision_id     uuid not null,
     tag_id          uuid not null
-) PARTITION BY HASH (operator_name);
+); -- PARTITION BY HASH (operator_name);
 
 CREATE INDEX spec_tag_s ON spec_tag using BTREE (operator_name, entity_id, revision_id);
 CREATE INDEX spec_tag_t ON spec_tag using BTREE (operator_name, tag_id);
 
-CREATE TABLE spec_tag_par_0 PARTITION OF spec_tag FOR VALUES WITH (MODULUS 8, REMAINDER 0);
-CREATE TABLE spec_tag_par_1 PARTITION OF spec_tag FOR VALUES WITH (MODULUS 8, REMAINDER 1);
-CREATE TABLE spec_tag_par_2 PARTITION OF spec_tag FOR VALUES WITH (MODULUS 8, REMAINDER 2);
-CREATE TABLE spec_tag_par_3 PARTITION OF spec_tag FOR VALUES WITH (MODULUS 8, REMAINDER 3);
-CREATE TABLE spec_tag_par_4 PARTITION OF spec_tag FOR VALUES WITH (MODULUS 8, REMAINDER 4);
-CREATE TABLE spec_tag_par_5 PARTITION OF spec_tag FOR VALUES WITH (MODULUS 8, REMAINDER 5);
-CREATE TABLE spec_tag_par_6 PARTITION OF spec_tag FOR VALUES WITH (MODULUS 8, REMAINDER 6);
-CREATE TABLE spec_tag_par_7 PARTITION OF spec_tag FOR VALUES WITH (MODULUS 8, REMAINDER 7);
+-- CREATE TABLE spec_tag_par_0 PARTITION OF spec_tag FOR VALUES WITH (MODULUS 8, REMAINDER 0);
+-- CREATE TABLE spec_tag_par_1 PARTITION OF spec_tag FOR VALUES WITH (MODULUS 8, REMAINDER 1);
+-- CREATE TABLE spec_tag_par_2 PARTITION OF spec_tag FOR VALUES WITH (MODULUS 8, REMAINDER 2);
+-- CREATE TABLE spec_tag_par_3 PARTITION OF spec_tag FOR VALUES WITH (MODULUS 8, REMAINDER 3);
+-- CREATE TABLE spec_tag_par_4 PARTITION OF spec_tag FOR VALUES WITH (MODULUS 8, REMAINDER 4);
+-- CREATE TABLE spec_tag_par_5 PARTITION OF spec_tag FOR VALUES WITH (MODULUS 8, REMAINDER 5);
+-- CREATE TABLE spec_tag_par_6 PARTITION OF spec_tag FOR VALUES WITH (MODULUS 8, REMAINDER 6);
+-- CREATE TABLE spec_tag_par_7 PARTITION OF spec_tag FOR VALUES WITH (MODULUS 8, REMAINDER 7);
 
 
 

@@ -1,0 +1,345 @@
+
+-- 10 * 10_000
+
+Postgres:
+ Test Result:
+   * Latency(ms):
+     - p50:     1.137856
+     - p90:     1.250601
+     - p99:     1.368664
+     - p999:    2.255542
+     - max:     13.134135
+  * ThroughPut(op/s):
+     - avg:     9297.252837653308
+     - max:     9839.0
+  * Total:
+     - op: 100000
+     - time(s): 10.755865388
+ Test Result(non-partitioned):
+   * Latency(ms):
+     - p50:     0.368001
+     - p90:     0.433996
+     - p99:     0.505993
+     - p999:    1.451874
+     - max:     12.403173
+  * ThroughPut(op/s):
+     - avg:     25775.207624600665
+     - max:     28320.0
+  * Total:
+     - op: 100000
+     - time(s): 3.879697167
+
+
+Mysql:
+  (not partitioned)
+   * Latency(ms):
+     - p50:     1.520283
+     - p90:     1.835804
+     - p99:     1.998625
+     - p999:    3.814653
+     - max:     25.892271
+  * ThroughPut(op/s):
+     - avg:     6512.060928982176
+     - max:     6808.0
+  * Total:
+     - op: 100000
+     - time(s): 15.356121678
+  
+  Test Result (partitioned):
+   * Latency(ms):
+     - p50:     1.362575
+     - p90:     1.686161
+     - p99:     1.906802
+     - p999:    4.46723
+     - max:     22.342719
+  * ThroughPut(op/s):
+     - avg:     7284.151398856126
+     - max:     7660.0
+  * Total:
+     - op: 100000
+     - time(s): 13.728435136
+   
+Mariadb:     
+ Test Result(non-partition):
+   * Latency(ms):
+     - p50:     190.27425
+     - p90:     305.558582
+     - p99:     338.437971
+     - p999:    348.488174
+     - max:     348.488174
+  * ThroughPut(op/s):
+     - avg:     39.71871289822649
+     - max:     40.0
+  * Total:
+     - op: 1000
+     - time(s): 25.177049482     
+ Test Result(Partitioned):
+   * Latency(ms):
+     - p50:     0.565078
+     - p90:     0.710163
+     - p99:     0.777983
+     - p999:    1.157387
+     - max:     13.056769
+  * ThroughPut(op/s):
+     - avg:     14415.583027288885
+     - max:     17040.0
+  * Total:
+     - op: 100000
+     - time(s): 6.936937605
+
+-- 40 * 10_000
+
+postgres:
+
+ Test Result:
+   * Latency(ms):
+     - p50:     1.237085
+     - p90:     1.322516
+     - p99:     1.597671
+     - p999:    6.805993
+     - max:     40.274791
+  * ThroughPut(op/s):
+     - avg:     11386.02042065638
+     - max:     12672.0
+  * Total:
+     - op: 400000
+     - time(s): 35.130799456
+
+ Test Result(non-partitioned):
+   * Latency(ms):
+     - p50:     0.425129
+     - p90:     0.473391
+     - p99:     0.550698
+     - p999:    1.793232
+     - max:     55.464302
+  * ThroughPut(op/s):
+     - avg:     31821.171393729983
+     - max:     36907.0
+  * Total:
+     - op: 400000
+     - time(s): 12.570247495
+
+
+Mysql:
+ Test Result:
+   * Latency(ms):
+     - p50:     2.533375
+     - p90:     2.996668
+     - p99:     3.38136
+     - p999:    10.705031
+     - max:     33.475788
+  * ThroughPut(op/s):
+     - avg:     6163.477885406785
+     - max:     7394.0
+  * Total:
+     - op: 400000
+     - time(s): 64.898423818
+
+ Test Result(partitioned):
+   * Latency(ms):
+     - p50:     2.300812
+     - p90:     2.758293
+     - p99:     3.110454
+     - p999:    8.782738
+     - max:     47.603733
+  * ThroughPut(op/s):
+     - avg:     6787.109508883026
+     - max:     8756.0
+  * Total:
+     - op: 400000
+     - time(s): 58.935250636
+
+Mariadb:
+ Test Result:
+   * Latency(ms):
+     - p50:     0.689113
+     - p90:     0.769356
+     - p99:     0.871491
+     - p999:    3.986937
+     - max:     36.067356
+  * ThroughPut(op/s):
+     - avg:     18928.543161885005
+     - max:     22533.0
+  * Total:
+     - op: 400000
+     - time(s): 21.132107029
+
+
+-- 60 * 10_000
+
+Postgres:
+ Test Result:
+   * Latency(ms):
+     - p50:     1.339028
+     - p90:     1.448497
+     - p99:     2.980433
+     - p999:    8.251606
+     - max:     40.757448
+  * ThroughPut(op/s):
+     - avg:     10523.127287259516
+     - max:     11101.0
+  * Total:
+     - op: 600000
+     - time(s): 57.017270971
+ Test Result(non-partitioned):
+   * Latency(ms):
+     - p50:     0.43129
+     - p90:     0.476366
+     - p99:     0.549597
+     - p999:    1.635021
+     - max:     86.830831
+  * ThroughPut(op/s):
+     - avg:     33841.34909427515
+     - max:     36880.0
+  * Total:
+     - op: 600000
+     - time(s): 17.729789623
+    
+
+Mysql:
+ Test Result:
+   * Latency(ms):
+     - p50:     2.563439
+     - p90:     3.030999
+     - p99:     3.418245
+     - p999:    7.545131
+     - max:     43.724659
+  * ThroughPut(op/s):
+     - avg:     6021.99820086856
+     - max:     6575.0
+  * Total:
+     - op: 600000
+     - time(s): 99.634702633
+ Test Result(partitioned):
+   * Latency(ms):
+     - p50:     2.300351
+     - p90:     2.754946
+     - p99:     3.094602
+     - p999:    6.091089
+     - max:     67.089311
+  * ThroughPut(op/s):
+     - avg:     6667.14458603636
+     - max:     7258.0
+  * Total:
+     - op: 600000
+     - time(s): 89.993548551
+
+
+Mariadb:
+ Test Result:
+   * Latency(ms):
+     - p50:     0.695885
+     - p90:     0.772933
+     - p99:     0.873765
+     - p999:    3.333571
+     - max:     71.947216
+  * ThroughPut(op/s):
+     - avg:     20051.89286100356
+     - max:     22472.0
+  * Total:
+     - op: 600000
+     - time(s): 29.922362151
+
+
+-- 80 * 10_000
+
+Postgres:
+ Test Result:
+   * Latency(ms):
+     - p50:     1.351256
+     - p90:     1.42673
+     - p99:     2.587512
+     - p999:    7.130212
+     - max:     55.377675
+  * ThroughPut(op/s):
+     - avg:     11311.931237202074
+     - max:     11755.0
+  * Total:
+     - op: 800000
+     - time(s): 70.72178775
+ Test Result(non-partitioned):
+   * Latency(ms):
+     - p50:     0.435128
+     - p90:     0.476827
+     - p99:     0.738656
+     - p999:    3.715311
+     - max:     88.758955
+  * ThroughPut(op/s):
+     - avg:     33030.061975734665
+     - max:     37130.0
+  * Total:
+     - op: 800000
+     - time(s): 24.220360246
+
+
+
+Mysql:
+
+ Test Result:
+   * Latency(ms):
+     - p50:     2.59019
+     - p90:     2.935266
+     - p99:     3.27348
+     - p999:    7.31336
+     - max:     41.915275
+  * ThroughPut(op/s):
+     - avg:     6164.060493786723
+     - max:     6537.0
+  * Total:
+     - op: 800000
+     - time(s): 129.78457963
+
+Mariadb:
+ Test Result:
+   * Latency(ms):
+     - p50:     0.705013
+     - p90:     0.784124
+     - p99:     1.051393
+     - p999:    5.798096
+     - max:     32.038574
+  * ThroughPut(op/s):
+     - avg:     19446.31909674919
+     - max:     22410.0
+  * Total:
+     - op: 800000
+     - time(s): 41.138890914
+ Test Result(partitioned):
+   * Latency(ms):
+     - p50:     2.386206
+     - p90:     2.801767
+     - p99:     3.157523
+     - p999:    6.953938
+     - max:     73.820676
+  * ThroughPut(op/s):
+     - avg:     6570.069024996776
+     - max:     6957.0
+  * Total:
+     - op: 800000
+     - time(s): 121.764321951
+    
+
+
+--------------------- search -----------------
+Postgres:
+ Test Result:
+   * Latency(ms):
+     - p50:     49.924778
+     - p90:     68.599599
+     - p99:     73.594855
+     - p999:    77.676846
+     - max:     271.618832
+  * ThroughPut(op/s):
+     - avg:     177.4317985384623
+     - max:     185.0
+  * Total:
+     - op: 100000
+     - time(s): 563.596834523
+
+---------------------- disk space -----------
+
+➜  _data git:(master) ✗ sudo du -sh mariadb
+673M    mariadb
+➜  _data git:(master) ✗ sudo du -sh mysql  
+928M    mysql
+➜  _data git:(master) ✗ sudo du -sh postgres
+430M    postgres

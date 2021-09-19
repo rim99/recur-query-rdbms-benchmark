@@ -20,8 +20,6 @@ CREATE TABLE specification (
 
 -- CREATE FULLTEXT INDEX spec_search_idx ON specification(name, description);
 
-
-
 CREATE TABLE spec_tag (
     operator_name   varchar(64) not null,
     entity_id       binary(16) not null,

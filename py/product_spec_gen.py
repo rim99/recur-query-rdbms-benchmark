@@ -178,7 +178,7 @@ class ProductSpec:
 
 def random_supported_countries():
     ac_indices = set()
-    for i in range(5, 50):
+    for i in range(1, 8):
         i = random.randrange(ac_len)
         ac_indices.add(i)
     ac = [avaliable_countries[i] for i in ac_indices]
@@ -192,7 +192,7 @@ class ProductSpecGen:
         result = set()
         cfss_l = [x for x in cfss_set]
         length_l = len(cfss_l)
-        indices = [random.randrange(length_l) for i in range(3, 18)]
+        indices = [random.randrange(length_l) for i in range(3, 8)]
         indices.sort()
         for i in range(number):
             ref = tuple([cfss_l[j].id for j in indices])

@@ -41,6 +41,27 @@ services:
         reservations:
           cpus: '0.25'
           memory: 128M  
+
+  mariadb:
+    image: mariadb:10.6.4-focal
+    volumes:
+      - ./_data/mariadb:/var/lib/mysql
+      - ./script/init/mariadb:/docker-entrypoint-initdb.d/
+    ports:
+      - 3307:3306  
+    environment:
+      - MARIADB_ROOT_PASSWORD=admin
+      - MARIADB_DATABASE=psr
+      - MARIADB_USER=someone
+      - MARIADB_PASSWORD=passme
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 4096M
+        reservations:
+          cpus: '0.25'
+          memory: 128M  
     
   generator:
     build: 
@@ -48,19 +69,24 @@ services:
       dockerfile: generator.dockerfile
     volumes:
       - ./py:/usr/src/app
+    environment:
+      - INSERT_TO_MYSQL=false
+      - INSERT_TO_PG=true
+      - INSERT_TO_MARIADB=false
     depends_on:
       - postgres
       - mysql
+      - mariadb
 
   consumer:
     build: 
       context: ./consumer
       dockerfile: dockerfile
     environment:
-      - CONCURRENCY=8
-      - HITS_PER_WORKER=10
-      - TEST_BEHAVIOUR=search # can be search or query
-      - TEST_DB=mysql # can be mysql or postgres
+      - CONCURRENCY=60
+      - HITS_PER_WORKER=10000
+      - TEST_BEHAVIOUR=query # can be search or query
+      - TEST_DB=postgres # can be mysql, mariadb or postgres
       # const env
       - PG_HOST=postgres
       - PG_DB=postgres
@@ -70,10 +96,16 @@ services:
       - MYSQL_DB=psr
       - MYSQL_USER=someone
       - MYSQL_PASSWORD=passme
+      - MARIADB_HOST=mariadb
+      - MARIADB_PORT=3306
+      - MARIADB_DATABASE=psr
+      - MARIADB_USER=someone
+      - MARIADB_PASSWORD=passme
     volumes:
       - ./consumer/target/scala-2.13/:/app  
     depends_on:
       - postgres
-      - mysql  
+      - mysql 
+      - mariadb 
 
 

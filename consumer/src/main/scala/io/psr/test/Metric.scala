@@ -17,8 +17,13 @@ object Metrics {
       m.endInNanoSec - m.startInNanoSec
     )}
     val (p50LatencyInMs, p90LatencyInMs, p99LatencyInMs, p999LatencyInMs, maxLatencyInMs) = calculateLatency(latencyL.toArray)
-    val (avgThroughPutInSec, maxThroughPutInSec) = calculateThroughput(startL.toArray, endL.toArray)
+    val (avgThroughPutInSec, maxThroughPutInSec, totalTimeInSec) = calculateThroughput(
+      startL.sortWith((a, b) => a <= b).toArray,
+      endL.sortWith((a, b) => a <= b).toArray
+    )
     Result(
+      totalOp = metrics.size,
+      totalTimeInSec = totalTimeInSec,
       p50LatencyInMs = p50LatencyInMs,
       p90LatencyInMs = p90LatencyInMs,
       p99LatencyInMs = p99LatencyInMs,
@@ -45,7 +50,7 @@ object Metrics {
     )
   }
 
-  private def calculateThroughput(startL: Array[Long], endL: Array[Long]): (Double, Double) = {
+  private def calculateThroughput(startL: Array[Long], endL: Array[Long]): (Double, Double, Double) = {
     /**
      *    -----------*a--|------*b--------*c---------*d-|---*e---*f-------> start time of every metric
      *                   |                              |
@@ -66,7 +71,8 @@ object Metrics {
      *
      *    Since we only care about the maximum of throughput, so we actively move the Period forward using the Pe only.
      */
-    val avgThroughPut = startL.length / math.max(1, ((endL.last - startL.head) / 1_000_000_000.0d))
+    val totalTimeInSec: Double = (endL.last - startL.head) / 1_000_000_000.0d
+    val avgThroughPut = startL.length / math.max(1d, totalTimeInSec)
 
     @tailrec
     def walkThroughTimeline(startL: Array[Long], psPosition: Int,
@@ -90,6 +96,6 @@ object Metrics {
     val maxThroughPut = walkThroughTimeline(startL, 0, endL, 0, 0, period)
     val _end = System.nanoTime()
     log.debug(s"Calculate maxThroughPut in nano sec: ${_end - _start}")
-    (avgThroughPut, maxThroughPut)
+    (avgThroughPut, maxThroughPut, totalTimeInSec)
   }
 }
