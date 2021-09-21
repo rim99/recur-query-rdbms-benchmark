@@ -16,7 +16,7 @@ CREATE TABLE specification (
     description     varchar(2048)  not null,
     properties      json not null,
     PRIMARY KEY(operator_name, entity_id, revision_id)
-) PARTITION BY KEY(operator_name);
+); -- PARTITION BY KEY(operator_name);
 
 -- CREATE FULLTEXT INDEX spec_search_idx ON specification(name, description);
 
@@ -36,7 +36,7 @@ CREATE TABLE spec_relationship (
     parent_entity_id binary(16) not null,
     child_entity_id  binary(16) not null,
     PRIMARY KEY(operator_name, parent_entity_id, child_entity_id)
-) PARTITION BY KEY (operator_name);
+); -- PARTITION BY KEY (operator_name);
 
 CREATE INDEX spec_relationship_p using BTREE ON spec_relationship (operator_name, parent_entity_id);
 CREATE INDEX spec_relationship_c using BTREE ON spec_relationship (operator_name, child_entity_id);

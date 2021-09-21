@@ -1,0 +1,125 @@
+Mariadb: 
+SET GLOBAL innodb_buffer_pool_size=4294967296; -- 4GB
+SHOW VARIABLES LIKE "innodb_buffer_pool_size";
+
+10 * 10_000
+
+ Test Result(partitioned):
+   * Latency(ms):
+     - p50:     0.538924
+     - p90:     0.718769
+     - p99:     0.784726
+     - p999:    1.181898
+     - max:     14.139831
+  * ThroughPut(op/s):
+     - avg:     14327.915864192457
+     - max:     16922.0
+  * Total:
+     - op: 100000
+     - time(s): 6.979382134
+ Test Result(non-partitioned):
+   * Latency(ms):
+     - p50:     0.51581
+     - p90:     0.654163
+     - p99:     0.717534
+     - p999:    1.103346
+     - max:     9.439016
+  * ThroughPut(op/s):
+     - avg:     15239.826136327702
+     - max:     18368.0
+  * Total:
+     - op: 100000
+     - time(s): 6.561754649     
+
+
+
+
+40 * 10_000     
+ Test Result(partitioned):
+   * Latency(ms):
+     - p50:     0.701066
+     - p90:     0.776485
+     - p99:     0.902508
+     - p999:    2.176342
+     - max:     36.033435
+  * ThroughPut(op/s):
+     - avg:     18689.70445847595
+     - max:     22331.0
+  * Total:
+     - op: 400000
+     - time(s): 21.402157583
+ Test Result(non-partitioned):
+   * Latency(ms):
+     - p50:     0.634046
+     - p90:     0.702027
+     - p99:     0.764364
+     - p999:    1.240852
+     - max:     38.119085
+  * ThroughPut(op/s):
+     - avg:     20849.76645575338
+     - max:     24755.0
+  * Total:
+     - op: 400000
+     - time(s): 19.184867171
+
+
+
+60 * 10_000
+ Test Result(partitioned):
+   * Latency(ms):
+     - p50:     0.710104
+     - p90:     0.781066
+     - p99:     0.873529
+     - p999:    1.459793
+     - max:     53.288207
+  * ThroughPut(op/s):
+     - avg:     19949.31351901061
+     - max:     22268.0
+  * Total:
+     - op: 600000
+     - time(s): 30.076222895
+ Test Result(non-partitioned):
+   * Latency(ms):
+     - p50:     0.646121
+     - p90:     0.711335
+     - p99:     0.818811
+     - p999:    1.294377
+     - max:     50.138277
+  * ThroughPut(op/s):
+     - avg:     21880.698887171427
+     - max:     24563.0
+  * Total:
+     - op: 600000
+     - time(s): 27.421427583
+
+
+
+80 * 10_000
+ Test Result(partitioned):
+   * Latency(ms):
+     - p50:     0.71793
+     - p90:     0.789063
+     - p99:     0.908678
+     - p999:    2.03918
+     - max:     27.519097
+  * ThroughPut(op/s):
+     - avg:     19462.72760059545
+     - max:     22131.0
+  * Total:
+     - op: 800000
+     - time(s): 41.104207818     
+ Test Result(non-partitioned):
+   * Latency(ms):
+     - p50:     0.66552
+     - p90:     0.745503
+     - p99:     1.50903
+     - p999:    4.902977
+     - max:     61.438265
+  * ThroughPut(op/s):
+     - avg:     19605.245174619227
+     - max:     22461.0
+  * Total:
+     - op: 800000
+     - time(s): 40.805406557
+
+

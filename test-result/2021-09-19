@@ -288,6 +288,19 @@ Mysql:
   * Total:
      - op: 800000
      - time(s): 129.78457963
+ Test Result(partitioned):
+   * Latency(ms):
+     - p50:     2.386206
+     - p90:     2.801767
+     - p99:     3.157523
+     - p999:    6.953938
+     - max:     73.820676
+  * ThroughPut(op/s):
+     - avg:     6570.069024996776
+     - max:     6957.0
+  * Total:
+     - op: 800000
+     - time(s): 121.764321951     
 
 Mariadb:
  Test Result:
@@ -303,19 +316,7 @@ Mariadb:
   * Total:
      - op: 800000
      - time(s): 41.138890914
- Test Result(partitioned):
-   * Latency(ms):
-     - p50:     2.386206
-     - p90:     2.801767
-     - p99:     3.157523
-     - p999:    6.953938
-     - max:     73.820676
-  * ThroughPut(op/s):
-     - avg:     6570.069024996776
-     - max:     6957.0
-  * Total:
-     - op: 800000
-     - time(s): 121.764321951
+
     
 
 

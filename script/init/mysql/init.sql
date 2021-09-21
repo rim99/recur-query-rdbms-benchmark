@@ -16,7 +16,7 @@ CREATE TABLE specification (
     description     varchar(2048)  not null,
     properties      json not null,
     PRIMARY KEY(operator_name, entity_id, revision_id)
-) PARTITION BY KEY(operator_name);
+); -- PARTITION BY KEY(operator_name);
 
 -- CREATE FULLTEXT INDEX spec_search_idx ON specification(name, description);
 
